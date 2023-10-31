@@ -45,7 +45,7 @@ class GithubStorage(storage.Storage):
         try:
             return self.user.get_repo(self.repo)
         except UnknownObjectException:
-            raise UnknownObjectException(400,message="Storage repository not found")
+            raise UnknownObjectException(400,message=f"Storage repository `{self.repo}` not found")
 
     def _open(self, name, mode='rb'):
         """
