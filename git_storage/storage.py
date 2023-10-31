@@ -7,10 +7,10 @@ from django.core.files.uploadedfile import UploadedFile
 
 from github import Github, Auth, BadCredentialsException,UnknownObjectException
 
-from .base import Git_STORAGE
+from .base import GIT_STORAGE
 
 class GithubStorage(storage.Storage):
-    token, repo  = Git_STORAGE["ACCESS_TOKEN"], Git_STORAGE["GIT_REPO"]
+    token, repo  = GIT_STORAGE["GIT_ACCESS_TOKEN"], GIT_STORAGE["GIT_REPO"]
     def __init__(self) -> None:
         self.user = self.get_authenticated_github_user()
         self.repo = self.fetch_storage_repo()
