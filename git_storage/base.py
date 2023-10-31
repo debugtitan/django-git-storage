@@ -1,5 +1,5 @@
 
 Git_STORAGE = {
-    "ACCESS_TOKEN": "ghp_wIleGCyUpT8Y3bWCZBFxQWMl",
+    "ACCESS_TOKEN": "",
     "GIT_REPO": ""
 }
