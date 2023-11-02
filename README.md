@@ -1,4 +1,4 @@
-# django-git-storage
+# django-git-storages
 
 Django Github Storage is a Django package that facilitates integration with [Github](http://github.com/)
 by implementing [Django Storage API](https://docs.djangoproject.com/en/1.11/howto/custom-file-storage/).
@@ -22,8 +22,10 @@ The package requires Python 3.4+ and Django 3+.
 
 To install the package, just run:
 ```
-$ pip install django-git-storage
+$ pip install django-git-storages
 ```
+
+## Settings
 
 Once you have done that, add `git_storage` to you installed apps in your `settings.py`.
 
