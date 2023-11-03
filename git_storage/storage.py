@@ -11,9 +11,11 @@ from .base import GIT_STORAGE_CONFIG as GIT_STORAGE
 
 class GithubStorage(storage.Storage):
     token, repo  = GIT_STORAGE["GIT_ACCESS_TOKEN"], GIT_STORAGE["GIT_REPO"]
+    #print(GIT_STORAGE)
     def __init__(self) -> None:
         self.user = self.get_authenticated_github_user()
         self.repo = self.fetch_storage_repo()
+        print(self.user.get_user().login,self.repo)
 
     def get_available_name(self, name, max_length) -> str:
         return str(secrets.token_hex(4)) + name

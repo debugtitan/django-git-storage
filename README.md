@@ -27,18 +27,8 @@ $ pip install django-git-storages
 
 ## Settings
 
-Once you have done that, add `git_storage` to you installed apps in your `settings.py`.
 
-```python
-INSTALLED_APPS = [
-    # ...
-    'django.contrib.staticfiles',
-    'git_storage',
-    # ...
-]
-```
-
-Next, you need to add Github credentials to `settings.py`:
+You need to add Github credentials to `settings.py`:
 
 ```python
 GIT_STORAGE = {

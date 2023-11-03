@@ -8,7 +8,8 @@ from django.core.exceptions import ImproperlyConfigured
 from django.dispatch import receiver
 from django.test.signals import setting_changed
 
-settings.configure()
+
+
 try:
     GIT_STORAGE_CONFIG = getattr(settings, "GIT_STORAGE", {})
     GIT_ACCESS_TOKEN, GIT_REPO = itemgetter("GIT_ACCESS_TOKEN", "GIT_REPO")(GIT_STORAGE_CONFIG)
