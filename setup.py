@@ -7,7 +7,7 @@ description = (
 
 setup(
     name='django-git-storages',
-    version='0.0.3',
+    version='0.0.4',
     author='Uche David',
     author_email='debugtitan.hub@outlook.com',
     description=description,

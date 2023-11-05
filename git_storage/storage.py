@@ -5,20 +5,19 @@ from django.core.files import storage
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import UploadedFile
 
-from github import Github, Auth, BadCredentialsException,UnknownObjectException
+from github import Github, Auth, BadCredentialsException, UnknownObjectException
 
 from .base import GIT_STORAGE_CONFIG as GIT_STORAGE
 
+
 class GithubStorage(storage.Storage):
-    token, repo  = GIT_STORAGE["GIT_ACCESS_TOKEN"], GIT_STORAGE["GIT_REPO"]
-    #print(GIT_STORAGE)
+    token, storage_repo = GIT_STORAGE["GIT_ACCESS_TOKEN"], GIT_STORAGE["GIT_REPO"]
     def __init__(self) -> None:
         self.user = self.get_authenticated_github_user()
         self.repo = self.fetch_storage_repo()
-        print(self.user.get_user().login,self.repo)
 
-    def get_available_name(self, name, max_length) -> str:
-        return str(secrets.token_hex(4)) + name
+    def get_available_name(self, name, max_length=4) -> str:
+        return str(secrets.token_hex(max_length)) + name
 
     def get_authenticated_github_user(self) -> Github | None:
         """
@@ -34,8 +33,9 @@ class GithubStorage(storage.Storage):
             if user.login:
                 return auth
         except BadCredentialsException as e:
-            raise BadCredentialsException(400,message="Invalid github access token") from e
-
+            raise BadCredentialsException(
+                400, message="Invalid github access token"
+            ) from e
 
     def fetch_storage_repo(self):
         """
@@ -45,11 +45,13 @@ class GithubStorage(storage.Storage):
         specified.
         """
         try:
-            return self.user.get_repo(self.repo)
+            return self.user.get_repo(self.storage_repo)
         except UnknownObjectException:
-            raise UnknownObjectException(400,message=f"Storage repository `{self.repo}` not found")
+            raise UnknownObjectException(
+                400, message=f"Storage repository `{self.storage_repo}` not found"
+            )
 
-    def _open(self, name, mode='rb'):
+    def _open(self, name, mode="rb"):
         """
         The function opens a file from a given URL and returns it as a ContentFile object.
 
@@ -81,7 +83,11 @@ class GithubStorage(storage.Storage):
         content of the file
         :return: The method `_upload` returns the contents of the file that was uploaded.
         """
+        # try:
+        name = self.get_available_name(name)
         self.repo.create_file(name, f"git-storage {name}", content.read())
+        # except Exception as e:
+        # print(e)
         return self.repo.get_contents(name)
 
     def save(self, name, content, max_length=None):
@@ -102,7 +108,6 @@ class GithubStorage(storage.Storage):
         content = UploadedFile(content, name)
         response = self._upload(name, content)
         return response.name
-
 
     def _get_url(self, name) -> Github:
         """
@@ -143,7 +148,9 @@ class GithubStorage(storage.Storage):
 
     def delete(self, name):
         contents = self._get_url(name)
-        response = self.repo.delete_file(contents.path, f"git-storage removed {name}", contents.sha)
+        response = self.repo.delete_file(
+            contents.path, f"git-storage removed {name}", contents.sha
+        )
         if response.status_code == 404:
             raise IOError(response.content)
         return 1
@@ -152,7 +159,6 @@ class GithubStorage(storage.Storage):
         url = self._get_url(name)
         response = requests.head(url)
         if response.status_code == 200:
-            return int(response.headers['content-length'])
+            return int(response.headers["content-length"])
         else:
             return None
-
