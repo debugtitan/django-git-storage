@@ -19,7 +19,7 @@ class GithubStorage(storage.Storage):
     def get_available_name(self, name, max_length=4) -> str:
         return str(secrets.token_hex(max_length)) + name
 
-    def get_authenticated_github_user(self) -> Github | None:
+    def get_authenticated_github_user(self):
         """
         The function `get_authenticated_github_user` returns the authenticated GitHub user if the access
         token is valid.
@@ -73,7 +73,7 @@ class GithubStorage(storage.Storage):
         file.mode = mode
         return file
 
-    def _upload(self, name, content) -> Github:
+    def _upload(self, name, content):
         """
         The `_upload` function creates a file in a repository and returns the contents of the file.
 
@@ -109,7 +109,7 @@ class GithubStorage(storage.Storage):
         response = self._upload(name, content)
         return response.name
 
-    def _get_url(self, name) -> Github:
+    def _get_url(self, name):
         """
         The function `_get_url` takes a name parameter and returns the download URL of a file with that
         name in a GitHub repository.
@@ -120,7 +120,7 @@ class GithubStorage(storage.Storage):
         """
         return self.repo.get_contents(name)
 
-    def url(self, name) -> Github:
+    def url(self, name):
         """
         The function returns the URL of a Github repository based on the given name.
 
